@@ -4,7 +4,6 @@ from typing import List, Optional
 import wikipedia
 import re
 
-
 class InstitutionDetails(BaseModel):
     name: str
     founder: Optional[str]
