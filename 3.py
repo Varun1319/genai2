@@ -16,6 +16,7 @@ medical_corpus = [
 nltk.download('punkt')
 nltk.download('stopwords')
 
+
 stop_words = set(stopwords.words('english'))
 processed_corpus = []
 
