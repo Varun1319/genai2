@@ -4,6 +4,8 @@ import string
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from gensim.models import Word2Vec
+import matplotlib.pyplot as plt
+from sklearn.decomposition import PCA
 
 medical_corpus = [
     "Diabetes is a chronic disease that affects the way the body processes blood sugar.",
@@ -15,7 +17,6 @@ medical_corpus = [
 
 nltk.download('punkt')
 nltk.download('stopwords')
-
 
 stop_words = set(stopwords.words('english'))
 processed_corpus = []
@@ -40,7 +41,7 @@ print("Similar words to 'diabetes':", word2vec_model.wv.most_similar("diabetes")
 res = word2vec_model.wv.most_similar(positive=["hypertension", "heart"], negative=["stroke"])
 print("Word vectors arithmetic result (hypertension + heart - stroke):", res)
 
-# Dimensionality reduction and plotting
+
 import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA
 
