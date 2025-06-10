@@ -1,14 +1,14 @@
 import gensim.downloader as api
 import openai
 
-openai.api_key = ""  
+openai.api_key = "" 
 print("Loading Word2Vec model (Google News).....")
 model = api.load("word2vec-google-news-300")
 print("Model Loaded \n")
 
 def get_similar_words(seed_word, top_n=5):
     try:
-        similar = model.most_similar(seed_word, topn=top_n)  
+        similar = model.most_similar(seed_word, topn=top_n)  # Fix typo: topn=top_n
         return [word for word, score in similar]
     except KeyError:
         print(f"'{seed_word}' not found in Word2Vec Vocabulary.")
@@ -17,13 +17,13 @@ def get_similar_words(seed_word, top_n=5):
 def generate_paragraph_with_gpt(seed_word, similar_words):
     word_str = ",".join(similar_words)
     prompt = (
-        f"Write a creative and meaningful paragraph using the word '{seed_word}', "
-        f"and these related words as a starting point: {word_str}. "
+        f"Write a creative and meaningful paragraph using the word '{seed_word}' ",
+        f"and these related words as a starting point: {word_str}. ",
         f"Make sure the paragraph is coherent, with clear sentence structure, and stays on topic."
     )
     try:
         response = openai.chat.completions.create(
-            model="gpt-4.0-mini",  
+            model="gpt-4o-mini", 
             messages=[
                 {"role": "system", "content": "You are a creative writer."},
                 {"role": "user", "content": prompt}
@@ -31,7 +31,7 @@ def generate_paragraph_with_gpt(seed_word, similar_words):
             temperature=0.8,
             max_tokens=150
         )
-        return response.choices[0].message.contents.strip()  
+        return response.choices[0].message.content.strip()  
     except Exception as e:
         return f"OpenAI API error: {str(e)}"
 
@@ -50,7 +50,6 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 
 
 //////////////////////////////////////////
