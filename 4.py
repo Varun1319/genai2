@@ -1,5 +1,5 @@
 import gensim.downloader as api
-import openai
+from openai import OpenAI
 
 word2vec_model = api.load("word2vec-google-news-300")
 
@@ -15,29 +15,23 @@ keywords = ["astronaut", "exploding", "distant", "exoplanet"]
 expanded_prompt = original_prompt
 for word in keywords:
     similar_words = get_similar_words(word)
-    expanded_prompt = expanded_prompt.replace(
-        word, f"{word} ({', '.join(similar_words)})"
-    )
+    enriched = f"{word} ({', '.join(similar_words)})"
+    expanded_prompt = expanded_prompt.replace(word, enriched)
 
-print("Original Prompt:", original_prompt)
-print("Enriched Prompt:", expanded_prompt)
+print("Original Prompt:\n", original_prompt)
+print("\nEnriched Prompt:\n", expanded_prompt)
 
-openai.api_key = ""
-#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
-
-import openai
-
-client = openai.OpenAI(api_key=" ")
-
-response_enriched = client.chat.completions.create(
-    model="gpt-4o-mini",
-    messages=[{"role": "user", "content": expanded_prompt}]
-)
+client = OpenAI(api_key="")  # Replace with your valid key
 
 response_original = client.chat.completions.create(
     model="gpt-4o-mini",
     messages=[{"role": "user", "content": original_prompt}]
 )
 
-print("\nResponse to original prompt:\n", response_original.choices[0].message.content)
-print("\nResponse to enriched prompt:\n", response_enriched.choices[0].message.content)
+response_enriched = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[{"role": "user", "content": expanded_prompt}]
+)
+
+print("\nResponse to Original Prompt:\n", response_original.choices[0].message.content)
+print("\nResponse to Enriched Prompt:\n", response_enriched.choices[0].message.content)
